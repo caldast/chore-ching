@@ -88,6 +88,30 @@ function loadState() {
   }
 }
 
+function hasRemoteState() {
+  return typeof getFirestore === 'function';
+}
+
+async function loadRemoteState() {
+  if (!hasRemoteState()) return null;
+  try {
+    const doc = await getFirestore().collection('choreChing').doc('sharedState').get();
+    return doc.exists ? doc.data() : null;
+  } catch (error) {
+    console.warn('Failed to load remote state', error);
+    return null;
+  }
+}
+
+async function persistRemoteState(state) {
+  if (!hasRemoteState()) return;
+  try {
+    await getFirestore().collection('choreChing').doc('sharedState').set(state);
+  } catch (error) {
+    console.warn('Failed to persist remote state', error);
+  }
+}
+
 function saveState() {
   const store = {
     chores: appState.chores,
@@ -95,6 +119,26 @@ function saveState() {
     users: appState.users,
   };
   localStorage.setItem(storageKey, JSON.stringify(store));
+  persistRemoteState(store);
+}
+
+function applySavedState(saved) {
+  if (!saved) return;
+  if (saved.users) {
+    Object.keys(saved.users).forEach((name) => {
+      if (appState.users[name]) {
+        appState.users[name].points = Number(saved.users[name].points || appState.users[name].points);
+      }
+    });
+  }
+  if (Array.isArray(saved.chores) && saved.chores.length) {
+    appState.chores.length = 0;
+    saved.chores.forEach((item) => appState.chores.push(item));
+  }
+  if (Array.isArray(saved.rewards) && saved.rewards.length) {
+    appState.rewards.length = 0;
+    saved.rewards.forEach((item) => appState.rewards.push(item));
+  }
 }
 
 function initializeState(rows) {
@@ -475,12 +519,23 @@ function wireEvents() {
   });
 }
 
-function init() {
-  loadConfigCsv().then((rows) => {
-    initializeState(rows);
-    wireEvents();
-    showScreen(elements.screenDashboard);
-  });
+async function init() {
+  const rows = await loadConfigCsv();
+  initializeState(rows);
+
+  const localSaved = loadState();
+  if (localSaved) {
+    applySavedState(localSaved);
+  }
+
+  const remoteSaved = await loadRemoteState();
+  if (remoteSaved) {
+    applySavedState(remoteSaved);
+    saveState();
+  }
+
+  wireEvents();
+  showScreen(elements.screenDashboard);
 }
 
 init();
