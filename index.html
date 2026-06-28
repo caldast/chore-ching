@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Chore Ching</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <h1>Chore Ching</h1>
+      <p>Tap your button, complete chores, and redeem rewards.</p>
+    </header>
+
+    <main>
+      <section id="screen-dashboard" class="screen active-screen" aria-label="Dashboard">
+        <div class="dashboard-grid">
+          <button id="btn-jasper" class="dashboard-card">Jasper</button>
+          <button id="btn-parent" class="dashboard-card parent-card">Parent</button>
+        </div>
+      </section>
+
+      <section id="screen-login" class="screen" aria-label="Login">
+        <div class="card login-card">
+          <h2 id="login-title">Sign in</h2>
+          <form id="login-form">
+            <label for="login-name">Name</label>
+            <input id="login-name" type="text" readonly />
+            <label for="login-password">Password</label>
+            <input id="login-password" type="password" autocomplete="current-password" required />
+            <button type="submit" class="primary-button">Log in</button>
+          </form>
+          <button class="secondary-button" id="login-back">Back</button>
+        </div>
+      </section>
+
+      <section id="screen-kid" class="screen" aria-label="Kid Dashboard">
+        <div class="top-bar">
+          <button class="secondary-button" id="kid-back">Back</button>
+          <div>
+            <span class="small-label">Signed in as</span>
+            <strong id="kid-user-name"></strong>
+          </div>
+          <div class="points-chip">Points: <span id="kid-points">0</span></div>
+        </div>
+
+        <div class="tab-row" role="tablist" aria-label="Kid navigation tabs">
+          <button class="tab-button active-tab" data-tab="chores">Chores</button>
+          <button class="tab-button" data-tab="redeem">Redeem</button>
+        </div>
+
+        <div id="kid-content">
+          <div id="kid-chores" class="tab-panel active-panel"></div>
+          <div id="kid-redeem" class="tab-panel"></div>
+        </div>
+      </section>
+
+      <section id="screen-parent" class="screen" aria-label="Parent Dashboard">
+        <div class="top-bar">
+          <button class="secondary-button" id="parent-back">Back</button>
+          <div>
+            <span class="small-label">Signed in as</span>
+            <strong>Parent</strong>
+          </div>
+        </div>
+
+        <div class="tab-row" role="tablist" aria-label="Parent navigation tabs">
+          <button class="tab-button active-tab" data-tab="manage-chores">Chores</button>
+          <button class="tab-button" data-tab="manage-rewards">Rewards</button>
+          <button class="tab-button" data-tab="manage-points">Kids</button>
+        </div>
+
+        <div id="parent-content">
+          <div id="manage-chores" class="tab-panel active-panel"></div>
+          <div id="manage-rewards" class="tab-panel"></div>
+          <div id="manage-points" class="tab-panel"></div>
+        </div>
+      </section>
+    </main>
+
+    <div id="toast" class="toast" aria-live="polite"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
