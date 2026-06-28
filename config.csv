@@ -1,0 +1,12 @@
+category,name,points,cost,password
+user,Jasper,0,,jasper123
+user,Parent,0,,parent123
+chore,Brush teeth,3,,
+chore,Read Book,10,,
+chore,Milk,3,,
+chore,Food,5,,
+reward,Soda,,10,
+reward,Cookie,,5,
+reward,Book,,5,
+reward,Pizza,,10,
+reward,Screen time,,10,
