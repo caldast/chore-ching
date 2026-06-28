@@ -141,6 +141,25 @@ function applySavedState(saved) {
   }
 }
 
+function getIconForName(name) {
+  const iconMap = {
+    'brush teeth': '🪥',
+    'brushteeth': '🪥',
+    'read book': '📚',
+    'readbook': '📚',
+    'milk': '🥛',
+    'food': '🍽️',
+    'soda': '🥤',
+    'cookie': '🍪',
+    'book': '📖',
+    'pizza': '🍕',
+    'screen time': '📱',
+    'screentime': '📱',
+  };
+  const key = name.toLowerCase();
+  return iconMap[key] || '✓';
+}
+
 function initializeState(rows) {
   const saved = loadState();
   const users = {};
@@ -236,7 +255,8 @@ function renderChores() {
     card.className = 'list-card';
     const details = document.createElement('div');
     details.className = 'details';
-    details.innerHTML = `<h3>${chore.name}</h3><p>${chore.points} points</p>`;
+    const icon = getIconForName(chore.name);
+    details.innerHTML = `<h3>${icon} ${chore.name}</h3><p>${chore.points} points</p>`;
 
     const button = document.createElement('button');
     button.className = 'action-button';
@@ -269,7 +289,8 @@ function renderRedeem() {
     card.className = 'list-card';
     const details = document.createElement('div');
     details.className = 'details';
-    details.innerHTML = `<h3>${reward.name}</h3><p>${reward.cost} points minimum</p>`;
+    const icon = getIconForName(reward.name);
+    details.innerHTML = `<h3>${icon} ${reward.name}</h3><p>${reward.cost} points minimum</p>`;
 
     const button = document.createElement('button');
     button.className = 'action-button';
